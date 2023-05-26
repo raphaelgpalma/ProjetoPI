@@ -25,6 +25,18 @@ class GerenciadorProdutos:
         t.sleep(1.5)
         print("Produto removido com sucesso.")
 
+    def visualizar_tabela(self):
+        self.c.execute("SELECT * FROM produtos")
+        rows = self.c.fetchall()
+        if len(rows) == 0:
+            print("Nenhum produto encontrado.")
+        else:
+            for row in rows:
+                print("Nome: ", row[0])
+                print("Preço: ", row[1])
+                print("Quantidade: ", row[2])
+                print("-----------------------")
+
     def fechar_conexao(self):
         self.conn.close()
 
@@ -63,6 +75,9 @@ class InterfaceUsuario:
     def fechar_conexao(self):
         self.gerenciador_produtos.fechar_conexao()
 
+    def visualizar_tabela(self):
+        self.gerenciador_produtos.visualizar_tabela()
+
 
 if __name__ == "__main__":
     interface = InterfaceUsuario()
@@ -71,6 +86,7 @@ if __name__ == "__main__":
         print("=====================================================")
         print("1. Adicionar Produto")
         print("2. Remover Produto")
+        print("3. Visualizar Tabela de Produtos")
         print("0. Sair")
         print("\n")
         opcao = input("Escolha uma opção: ")
@@ -81,8 +97,7 @@ if __name__ == "__main__":
             interface.add_produto()
         elif opcao == "2":
             interface.remover_produto()
+        elif opcao == "3":
+            interface.visualizar_tabela()
         elif opcao == "0":
-            interface.interromper_programa()
-        else:
-            print("Opção inválida. Tente novamente.")
-
+            interface.interromper
