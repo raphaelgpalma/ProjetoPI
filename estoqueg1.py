@@ -100,4 +100,4 @@ if __name__ == "__main__":
         elif opcao == "3":
             interface.visualizar_tabela()
         elif opcao == "0":
-            interface.interromper
+            interface.interromper_programa()
