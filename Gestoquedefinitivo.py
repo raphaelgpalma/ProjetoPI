@@ -57,8 +57,8 @@ class GerenciadorProdutos:
         plt.ylabel('Quantidade')
         plt.title('Quantidade de Produtos')
         plt.xticks(rotation=80)
-        plt.show(block=False)
-        plt.waitforbuttonpress()
+        plt.show(block=True)
+        
 
                 
     def contar_produtos(self):
