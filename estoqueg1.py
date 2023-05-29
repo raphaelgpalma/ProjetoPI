@@ -1,6 +1,9 @@
 import sqlite3
 import sys
 import time as t
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 class GerenciadorProdutos:
@@ -15,7 +18,7 @@ class GerenciadorProdutos:
         self.c.execute("INSERT INTO produtos VALUES (?, ?, ?)", (nome, preco, quantidade))
         self.conn.commit()
         print("Adicionando Produto...")
-        for i in range(1):
+        for i in range(2):
             print(".")
             t.sleep(0.5)
         print("Produto adicionado com sucesso.")
@@ -24,7 +27,7 @@ class GerenciadorProdutos:
         self.c.execute("DELETE FROM produtos WHERE nome = ?", (nome,))
         self.conn.commit()
         print("Removendo Produto...")
-        for i in range(1):
+        for i in range(2):
             print(".")
             t.sleep(0.5)
         print("Produto removido com sucesso.")
@@ -42,8 +45,27 @@ class GerenciadorProdutos:
                 print("Preço: ", row[1])
                 print("Quantidade: ", row[2])
                 print("-----------------------")
+
+    def plot_grafico(self):
+        self.c.execute("SELECT nome, quantidade FROM produtos")
+        query = self.c.fetchall()
+        df = pd.DataFrame(query, columns=['Nome', 'Quantidade'])
+        plt.figure(figsize=(20, 10))
+        
+        sns.barplot(data=df, x='Nome', y='Quantidade',palette='dark')
+        plt.xlabel('Nome do Produto')
+        plt.ylabel('Quantidade')
+        plt.title('Quantidade de Produtos')
+        plt.xticks(rotation=80)
+        plt.show(block=False)
+        plt.waitforbuttonpress()
+
                 
     def contar_produtos(self):
+        print('Contando...')
+        for i in range(2):
+            print(".")
+            t.sleep(0.5)
         self.c.execute("SELECT COUNT(*) FROM produtos")
         quant = self.c.fetchone()[0]
         print('Quantidade total de produtos:', quant)
@@ -91,6 +113,15 @@ class InterfaceUsuario:
        
     def contar_produtos(self):
         self.gerenciador_produtos.contar_produtos()
+    
+    def plot_grafico(self):
+        print('Gerando grafico...')
+        for i in range(3):
+            print(".")
+            t.sleep(0.5)
+        print('Aperte qualquer botao para sair.')
+
+        self.gerenciador_produtos.plot_grafico()
 
 
 if __name__ == "__main__":
@@ -102,6 +133,7 @@ if __name__ == "__main__":
         print("2. Remover Produto")
         print("3. Visualizar Tabela de Produtos")
         print('4. Total de Produtos')
+        print('5. Plotar Grafico')
         print("0. Encerrar Programa")
         print("\n")
         opcao = input("Escolha uma opção: ")
@@ -118,5 +150,7 @@ if __name__ == "__main__":
             interface.interromper_programa()
         elif opcao == '4':
             interface.contar_produtos()
+        elif opcao == '5':
+            interface.plot_grafico()
         else:
-            print('Comando Invalido.')
+            print('Comando Invalido. Tente novamente.')
