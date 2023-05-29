@@ -42,6 +42,11 @@ class GerenciadorProdutos:
                 print("Preço: ", row[1])
                 print("Quantidade: ", row[2])
                 print("-----------------------")
+                
+    def contar_produtos(self):
+        self.c.execute("SELECT COUNT(*) FROM produtos")
+        quant = self.c.fetchone()[0]
+        print('Quantidade total de produtos:', quant)
 
     def fechar_conexao(self):
         self.conn.close()
@@ -83,6 +88,9 @@ class InterfaceUsuario:
 
     def visualizar_tabela(self):
         self.gerenciador_produtos.visualizar_tabela()
+       
+    def contar_produtos(self):
+        self.gerenciador_produtos.contar_produtos()
 
 
 if __name__ == "__main__":
@@ -93,6 +101,7 @@ if __name__ == "__main__":
         print("1. Adicionar Produto")
         print("2. Remover Produto")
         print("3. Visualizar Tabela de Produtos")
+        print('4. Total de Produtos')
         print("0. Encerrar Programa")
         print("\n")
         opcao = input("Escolha uma opção: ")
@@ -107,3 +116,7 @@ if __name__ == "__main__":
             interface.visualizar_tabela()
         elif opcao == "0":
             interface.interromper_programa()
+        elif opcao == '4':
+            interface.contar_produtos()
+        else:
+            print('Comando Invalido.')
